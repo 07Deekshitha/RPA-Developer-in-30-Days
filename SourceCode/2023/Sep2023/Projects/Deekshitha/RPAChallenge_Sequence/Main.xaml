@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Main" VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="1130.4,6535.2" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:uasf="clr-namespace:UiPath.Activities.System.FileOperations;assembly=UiPath.System.Activities" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Main" VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="1130.4,6535.2" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:uasf="clr-namespace:UiPath.Activities.System.FileOperations;assembly=UiPath.System.Activities" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:uix="http://schemas.uipath.com/workflow/activities/uix" xmlns:upr="clr-namespace:UiPath.Platform.ResourceHandling;assembly=UiPath.Platform" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
       <x:String>System.Activities</x:String>
@@ -43,6 +43,7 @@
       <x:String>UiPath.UIAutomationNext.Activities.Models</x:String>
       <x:String>UiPath.Activities.System.FileOperations</x:String>
       <x:String>UiPath.Platform.ResourceHandling</x:String>
+      <x:String>System.Activities.Runtime.Collections</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -112,6 +113,9 @@
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
   <Sequence DisplayName="RPA Challenge" sap:VirtualizedContainerService.HintSize="646.4,6470.4" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="upr:ILocalResource" Name="_out_DownloadFileFromUrl_1__ResponseAttachment" />
+    </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -140,14 +144,14 @@
                 <uix:TargetAnchorable BrowserURL="https://rpachallenge.com/" CvElementArea="20, 924, 452, 49" CvType="Button" DesignTimeRectangle="23, 925, 447, 45" DesignTimeScaleFactor="1.25" ElementType="Text" FriendlyName="'Download Excel'" FullSelectorArgument="&lt;webctrl aaname=' Download Excel cloud_download' tag='A' /&gt;" FuzzySelectorArgument="&lt;webctrl aaname=' Download Excel cloud_download' tag='A' type='' class=' col s12 m12 l12 btn waves-effect waves-light uiColorPrimary center' check:innerText='DOWNLOAD EXCEL&amp;#xD;&amp;#xA;cloud_download' /&gt;" Guid="86b8dfc6-b4c1-4c2e-98c2-f7b742af8119" InformativeScreenshot="527907e9bdc60b6a44853040f3d1ef30.png" ScopeSelectorArgument="&lt;html app='chrome.exe' title='Rpa Challenge' /&gt;" SearchSteps="FuzzySelector, CV" Version="V2" Visibility="Interactive" />
               </uix:NClick.Target>
             </uix:NClick>
-            <uasf:DownloadFileFromUrl FileName="{x:Null}" ResponseAttachment="{x:Null}" Timeout="{x:Null}" sap2010:Annotation.AnnotationText="this dowloads the excel sheet in any machine." ConflictResolution="Rename" DisplayName="Download File from URL - dowloads the excel with url" sap:VirtualizedContainerService.HintSize="488,121.6" sap2010:WorkflowViewState.IdRef="DownloadFileFromUrl_1" Url="https://rpachallenge.com/assets/downloadFiles/challenge.xlsx">
+            <uasf:DownloadFileFromUrl FileName="{x:Null}" Timeout="{x:Null}" sap2010:Annotation.AnnotationText="this dowloads the excel sheet in any machine." ConflictResolution="Rename" DisplayName="Download File from URL - dowloads the excel with url" sap:VirtualizedContainerService.HintSize="488,121.6" sap2010:WorkflowViewState.IdRef="DownloadFileFromUrl_1" ResponseAttachment="[_out_DownloadFileFromUrl_1__ResponseAttachment]" Url="https://rpachallenge.com/assets/downloadFiles/challenge.xlsx">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
             </uasf:DownloadFileFromUrl>
-            <ui:ReadRange AddHeaders="True" sap2010:Annotation.AnnotationText="This data will be stiored in the form of data table" DataTable="[dt_DownloadedData]" DisplayName="Read Range Workbook - reads the excel sheet" sap:VirtualizedContainerService.HintSize="488,119.2" sap2010:WorkflowViewState.IdRef="ReadRange_1" PreserveFormat="True" SheetName="Sheet1" WorkbookPath="challenge.xlsx">
+            <ui:ReadRange AddHeaders="True" sap2010:Annotation.AnnotationText="This data will be stiored in the form of data table" DataTable="[dt_DownloadedData]" DisplayName="Read Range Workbook - reads the excel sheet" sap:VirtualizedContainerService.HintSize="488,119.2" sap2010:WorkflowViewState.IdRef="ReadRange_1" PreserveFormat="True" SheetName="Sheet1" WorkbookPath="[_out_DownloadFileFromUrl_1__ResponseAttachment.FullName]">
               <ui:ReadRange.Range>
                 <InArgument x:TypeArguments="x:String">
                   <Literal x:TypeArguments="x:String" Value="" />
@@ -178,7 +182,7 @@
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
             </ui:DeleteQueueItems>
-            <ui:LogMessage DisplayName="Log Message_01" sap:VirtualizedContainerService.HintSize="488,144" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="[UiPath.Core.Activities.LogLevel.Info]" Message="[&quot;Items in New state are deleted&quot;]" />
+            <ui:LogMessage DisplayName="Log Message-01" sap:VirtualizedContainerService.HintSize="488,144" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="[UiPath.Core.Activities.LogLevel.Info]" Message="[&quot;Items in New state are deleted&quot;]" />
             <ui:BulkAddQueueItems TimeoutMS="{x:Null}" sap2010:Annotation.AnnotationText="if we have 100's of items then we can use bulk add queue items to Queue" DisplayName="Bulk Add Queue Items &quot;adds more items to queue&quot;" FolderPath="RPAChallenge" sap:VirtualizedContainerService.HintSize="488,239.2" sap2010:WorkflowViewState.IdRef="BulkAddQueueItems_1" QueueItemsDataTable="[dt_DownloadedData]" QueueName="RPAChallengeQueue" Result="[dt_AddItemstoQueue]">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -186,15 +190,15 @@
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
             </ui:BulkAddQueueItems>
-            <ui:LogMessage DisplayName="Log Message_02" sap:VirtualizedContainerService.HintSize="488,144" sap2010:WorkflowViewState.IdRef="LogMessage_4" Message="[&quot;Items successfilly added to Queue&quot;]" />
-            <ui:GetQueueItems Duration="{x:Null}" From="{x:Null}" Priority="{x:Null}" Reference="{x:Null}" Skip="{x:Null}" TimeoutMS="{x:Null}" To="{x:Null}" Top="{x:Null}" sap2010:Annotation.AnnotationText="what ever data added to queue can be retrived by get Queue items.&#xA;This is usdede to get more items from queue and this items will be stored in the form of IEnnumerable collection." DisplayName="Get Queue Items &quot;all the items added to queue will be retirved by this&quot;" FilterStrategy="Equals" FolderPath="RPAChallenge" sap:VirtualizedContainerService.HintSize="488,235.2" sap2010:WorkflowViewState.IdRef="GetQueueItems_2" QueueItemStates="All" QueueName="RPAChallengeQueue" Result="[QueueItemList]">
+            <ui:LogMessage DisplayName="Log Message-02" sap:VirtualizedContainerService.HintSize="488,144" sap2010:WorkflowViewState.IdRef="LogMessage_4" Message="[&quot;Items successfilly added to Queue&quot;]" />
+            <ui:GetQueueItems Duration="{x:Null}" From="{x:Null}" Priority="{x:Null}" Reference="{x:Null}" Skip="{x:Null}" TimeoutMS="{x:Null}" To="{x:Null}" Top="{x:Null}" sap2010:Annotation.AnnotationText="what ever data added to queue can be retrived by get Queue items.&#xA;This is used to get more items from queue and this items will be stored in the form of IEnnumerable collection." DisplayName="Get Queue Items &quot;all the items added to queue will be retirved by this&quot;" FilterStrategy="Equals" FolderPath="RPAChallenge" sap:VirtualizedContainerService.HintSize="488,235.2" sap2010:WorkflowViewState.IdRef="GetQueueItems_2" QueueItemStates="All" QueueName="RPAChallengeQueue" Result="[QueueItemList]">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
             </ui:GetQueueItems>
-            <ui:LogMessage DisplayName="Log Message_03" sap:VirtualizedContainerService.HintSize="488,144" sap2010:WorkflowViewState.IdRef="LogMessage_5" Message="[&quot;Items successfully retrieved from Queue&quot;]" />
+            <ui:LogMessage DisplayName="Log Message-03" sap:VirtualizedContainerService.HintSize="488,144" sap2010:WorkflowViewState.IdRef="LogMessage_5" Message="[&quot;Items successfully retrieved from Queue&quot;]" />
             <If Condition="[QueueItemList.Count &gt; 0]" DisplayName="If - check if the condition is true then the body will be performed" sap:VirtualizedContainerService.HintSize="488,3320.8" sap2010:WorkflowViewState.IdRef="If_2">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -370,7 +374,7 @@
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
             </uix:NGetText>
-            <ui:LogMessage DisplayName="Log Message_05" sap:VirtualizedContainerService.HintSize="488,144" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="[UiPath.Core.Activities.LogLevel.Info]" Message="[Congratulations + &quot; Deekshitha&quot;]" />
+            <ui:LogMessage DisplayName="Log Message-05" sap:VirtualizedContainerService.HintSize="488,144" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="[UiPath.Core.Activities.LogLevel.Info]" Message="[Congratulations + &quot; Deekshitha&quot;]" />
           </Sequence>
         </ActivityAction>
       </uix:NApplicationCard.Body>
