@@ -3,15 +3,23 @@
     <x:Property sap2010:Annotation.AnnotationText="Transaction item to be processed." Name="in_TransactionItem" Type="InArgument(ui:QueueItem)" />
     <x:Property sap2010:Annotation.AnnotationText="Dictionary structure to store configuration data of the process (settings, constants and assets)." Name="in_Config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
     <x:Property Name="in_DBCon" Type="InArgument(ui:DatabaseConnection)" />
-    <x:Property Name="Dt_DataRow" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="Dt_DataRow_Jr" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="Dt_DataRow_Sr" Type="InArgument(sd:DataTable)" />
+    <x:Property Name="Dt_DataRow_empty" Type="InArgument(sd:DataTable)" />
   </x:Members>
-  <this:Process.Dt_DataRow>
+  <this:Process.Dt_DataRow_Jr>
     <InArgument x:TypeArguments="sd:DataTable" />
-  </this:Process.Dt_DataRow>
+  </this:Process.Dt_DataRow_Jr>
+  <this:Process.Dt_DataRow_Sr>
+    <InArgument x:TypeArguments="sd:DataTable" />
+  </this:Process.Dt_DataRow_Sr>
+  <this:Process.Dt_DataRow_empty>
+    <InArgument x:TypeArguments="sd:DataTable" />
+  </this:Process.Dt_DataRow_empty>
   <VisualBasic.Settings>
     <x:Null />
   </VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>833.6,1316</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>833.6,2446.4</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ProcessTransaction_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="50">
@@ -48,6 +56,8 @@
       <x:String>UiPath.Database.Activities</x:String>
       <x:String>System.ComponentModel</x:String>
       <x:String>System.Xml.Serialization</x:String>
+      <x:String>UiPath.Excel</x:String>
+      <x:String>UiPath.Excel.Activities</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -103,14 +113,18 @@
       <AssemblyReference>System.ComponentModel.Primitives</AssemblyReference>
       <AssemblyReference>System.Private.Xml</AssemblyReference>
       <AssemblyReference>System.Data.SqlClient</AssemblyReference>
+      <AssemblyReference>System.Memory.Data</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities.ViewModels</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Invoke major steps of the business process, which are usually implemented by multiple subworkflows.&#xA;&#xA;If a BusinessRuleException is thrown, the transaction is skipped. &#xA;If another kind of exception occurs, the current transaction can be retried. " DisplayName="Process" sap:VirtualizedContainerService.HintSize="496,1251.2" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Invoke major steps of the business process, which are usually implemented by multiple subworkflows.&#xA;&#xA;If a BusinessRuleException is thrown, the transaction is skipped. &#xA;If another kind of exception occurs, the current transaction can be retried. " DisplayName="Process" sap:VirtualizedContainerService.HintSize="595.2,2381.6" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="firstname" />
       <Variable x:TypeArguments="x:String" Name="lastname" />
       <Variable x:TypeArguments="x:String" Name="suffix" />
       <Variable x:TypeArguments="x:Int32" Name="dt_command" />
+      <Variable x:TypeArguments="x:Int32" Name="increment" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -118,37 +132,162 @@
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:LogMessage DisplayName="Log Message Process Start" sap:VirtualizedContainerService.HintSize="433.6,142.4" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Started Process&quot;]" />
-    <Assign sap:VirtualizedContainerService.HintSize="433.6,81.6" sap2010:WorkflowViewState.IdRef="Assign_1">
-      <Assign.To>
-        <OutArgument x:TypeArguments="x:String">[firstname]</OutArgument>
-      </Assign.To>
-      <Assign.Value>
-        <InArgument x:TypeArguments="x:String">[in_TransactionItem.SpecificContent("firstname").ToString]</InArgument>
-      </Assign.Value>
-    </Assign>
-    <Assign sap:VirtualizedContainerService.HintSize="433.6,81.6" sap2010:WorkflowViewState.IdRef="Assign_2">
-      <Assign.To>
-        <OutArgument x:TypeArguments="x:String">[lastname]</OutArgument>
-      </Assign.To>
-      <Assign.Value>
-        <InArgument x:TypeArguments="x:String">[in_TransactionItem.SpecificContent("lastname").ToString]</InArgument>
-      </Assign.Value>
-    </Assign>
-    <Assign sap:VirtualizedContainerService.HintSize="433.6,81.6" sap2010:WorkflowViewState.IdRef="Assign_3">
-      <Assign.To>
-        <OutArgument x:TypeArguments="x:String">[suffix]</OutArgument>
-      </Assign.To>
-      <Assign.Value>
-        <InArgument x:TypeArguments="x:String">[in_TransactionItem.SpecificContent("suffix").ToString]</InArgument>
-      </Assign.Value>
-    </Assign>
-    <ui:ExecuteNonQuery ContinueOnError="{x:Null}" TimeoutMS="{x:Null}" AffectedRecords="[dt_command]" CommandType="Text" DisplayName="Run command" ExistingDbConnection="[in_DBCon]" sap:VirtualizedContainerService.HintSize="433.6,89.6" sap2010:WorkflowViewState.IdRef="ExecuteNonQuery_1" Sql="[&quot;INSERT INTO [dbo].[Vajrang] (firstname, lastname, suffix) VALUES ('&quot; &amp; firstname &amp; &quot;', '&quot; &amp; lastname &amp; &quot;', '&quot; &amp; suffix &amp; &quot;');&quot;]">
-      <ui:ExecuteNonQuery.Parameters>
-        <scg:Dictionary x:TypeArguments="x:String, Argument" />
-      </ui:ExecuteNonQuery.Parameters>
-    </ui:ExecuteNonQuery>
-    <ui:AddDataRow DataRow="{x:Null}" ArrayRow="[{firstname, lastname, suffix}]" DataTable="[Dt_DataRow]" DisplayName="Add Data Row" sap:VirtualizedContainerService.HintSize="433.6,188" sap2010:WorkflowViewState.IdRef="AddDataRow_1" />
-    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="433.6,142.4" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="[UiPath.Core.Activities.LogLevel.Info]" Message="[in_TransactionItem.SpecificContent(&quot;firstname&quot;).ToString +&quot; ------------------------------------------------------------   &quot;  + in_TransactionItem.SpecificContent(&quot;lastname&quot;).ToString +&quot; ------------------------------------------------------------   &quot;  + in_TransactionItem.SpecificContent(&quot;suffix&quot;).ToString]" />
+    <ui:LogMessage DisplayName="Log Message Process Start" sap:VirtualizedContainerService.HintSize="532.8,142.4" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Started Process&quot;]" />
+    <Switch x:TypeArguments="x:String" DisplayName="Switch" Expression="[in_TransactionItem.SpecificContent(&quot;suffix&quot;).ToString]" sap:VirtualizedContainerService.HintSize="532.8,1646.4" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+      <Switch.Default>
+        <Sequence sap:VirtualizedContainerService.HintSize="496,1437.6" sap2010:WorkflowViewState.IdRef="Sequence_5">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <Assign sap:VirtualizedContainerService.HintSize="433.6,81.6" sap2010:WorkflowViewState.IdRef="Assign_12">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">[firstname]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">[in_TransactionItem.SpecificContent("firstname").ToString]</InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign sap:VirtualizedContainerService.HintSize="433.6,81.6" sap2010:WorkflowViewState.IdRef="Assign_13">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">[lastname]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">[in_TransactionItem.SpecificContent("lastname").ToString]</InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign sap:VirtualizedContainerService.HintSize="433.6,81.6" sap2010:WorkflowViewState.IdRef="Assign_14">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">[suffix]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">[in_TransactionItem.SpecificContent("suffix").ToString]</InArgument>
+            </Assign.Value>
+          </Assign>
+          <ui:AddDataRow DataRow="{x:Null}" ArrayRow="[{firstname, lastname, suffix}]" DataTable="[Dt_DataRow_empty]" DisplayName="Add Data Row" sap:VirtualizedContainerService.HintSize="433.6,188" sap2010:WorkflowViewState.IdRef="AddDataRow_4" />
+          <Assign sap:VirtualizedContainerService.HintSize="433.6,81.6" sap2010:WorkflowViewState.IdRef="Assign_15">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Int32">[increment]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Int32">[increment + 2]</InArgument>
+            </Assign.Value>
+          </Assign>
+          <ui:WriteRange AddHeaders="True" DataTable="[Dt_DataRow_empty]" DisplayName="Write Range Workbook" sap:VirtualizedContainerService.HintSize="433.6,116" sap2010:WorkflowViewState.IdRef="WriteRange_3" SheetName="Sheet4" WorkbookPath="[in_Config(&quot;DataFile&quot;).ToString]">
+            <ui:WriteRange.StartingCell>
+              <InArgument x:TypeArguments="x:String">
+                <Literal x:TypeArguments="x:String" Value="" />
+              </InArgument>
+            </ui:WriteRange.StartingCell>
+          </ui:WriteRange>
+          <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="433.6,142.4" sap2010:WorkflowViewState.IdRef="LogMessage_7" Level="[UiPath.Core.Activities.LogLevel.Info]" Message="[&quot;Details of empty&quot;+in_TransactionItem.SpecificContent(&quot;firstname&quot;).ToString +&quot; -----------------------------   &quot;  + in_TransactionItem.SpecificContent(&quot;lastname&quot;).ToString +&quot; -----------------------------   &quot;  + in_TransactionItem.SpecificContent(&quot;suffix&quot;).ToString]" />
+          <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="433.6,142.4" sap2010:WorkflowViewState.IdRef="LogMessage_8" Level="[UiPath.Core.Activities.LogLevel.Info]" Message="[&quot;Count of new empty rows --------------------&gt;&quot; + (Dt_DataRow_empty.RowCount).ToString]" />
+          <Throw Exception="[New BusinessRuleException(&quot;Empty suffix&quot;)]" sap:VirtualizedContainerService.HintSize="433.6,90.4" sap2010:WorkflowViewState.IdRef="Throw_1" />
+        </Sequence>
+      </Switch.Default>
+      <Sequence x:Key="Jr" DisplayName="Jr Sequence" sap:VirtualizedContainerService.HintSize="496,1254.4" sap2010:WorkflowViewState.IdRef="Sequence_2">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <Assign sap:VirtualizedContainerService.HintSize="433.6,81.6" sap2010:WorkflowViewState.IdRef="Assign_1">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">[firstname]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">[in_TransactionItem.SpecificContent("firstname").ToString]</InArgument>
+          </Assign.Value>
+        </Assign>
+        <Assign sap:VirtualizedContainerService.HintSize="433.6,81.6" sap2010:WorkflowViewState.IdRef="Assign_2">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">[lastname]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">[in_TransactionItem.SpecificContent("lastname").ToString]</InArgument>
+          </Assign.Value>
+        </Assign>
+        <Assign sap:VirtualizedContainerService.HintSize="433.6,81.6" sap2010:WorkflowViewState.IdRef="Assign_3">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">[suffix]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">[in_TransactionItem.SpecificContent("suffix").ToString]</InArgument>
+          </Assign.Value>
+        </Assign>
+        <ui:ExecuteNonQuery ContinueOnError="{x:Null}" TimeoutMS="{x:Null}" AffectedRecords="[dt_command]" CommandType="Text" DisplayName="Run command" ExistingDbConnection="[in_DBCon]" sap:VirtualizedContainerService.HintSize="433.6,89.6" sap2010:WorkflowViewState.IdRef="ExecuteNonQuery_1" Sql="[&quot;INSERT INTO [dbo].[Vajrang] (firstname, lastname, suffix) VALUES ('&quot; &amp; firstname &amp; &quot;', '&quot; &amp; lastname &amp; &quot;', '&quot; &amp; suffix &amp; &quot;');&quot;]">
+          <ui:ExecuteNonQuery.Parameters>
+            <scg:Dictionary x:TypeArguments="x:String, Argument" />
+          </ui:ExecuteNonQuery.Parameters>
+        </ui:ExecuteNonQuery>
+        <ui:AddDataRow DataRow="{x:Null}" ArrayRow="[{firstname, lastname, suffix}]" DataTable="[Dt_DataRow_Jr]" DisplayName="Add Data Row" sap:VirtualizedContainerService.HintSize="433.6,188" sap2010:WorkflowViewState.IdRef="AddDataRow_1" />
+        <Assign sap:VirtualizedContainerService.HintSize="433.6,81.6" sap2010:WorkflowViewState.IdRef="Assign_10">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:Int32">[increment]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:Int32">[increment + 2]</InArgument>
+          </Assign.Value>
+        </Assign>
+        <ui:WriteRange AddHeaders="True" DataTable="[Dt_DataRow_Jr]" DisplayName="Write Range Workbook" sap:VirtualizedContainerService.HintSize="433.6,116" sap2010:WorkflowViewState.IdRef="WriteRange_1" SheetName="Sheet2" WorkbookPath="[in_Config(&quot;DataFile&quot;).ToString]">
+          <ui:WriteRange.StartingCell>
+            <InArgument x:TypeArguments="x:String">
+              <Literal x:TypeArguments="x:String" Value="" />
+            </InArgument>
+          </ui:WriteRange.StartingCell>
+        </ui:WriteRange>
+        <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="433.6,142.4" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="[UiPath.Core.Activities.LogLevel.Info]" Message="[&quot;Details of Jr&quot;+in_TransactionItem.SpecificContent(&quot;firstname&quot;).ToString +&quot; -----------------------------   &quot;  + in_TransactionItem.SpecificContent(&quot;lastname&quot;).ToString +&quot; -----------------------------   &quot;  + in_TransactionItem.SpecificContent(&quot;suffix&quot;).ToString]" />
+      </Sequence>
+      <Sequence x:Key="Sr" DisplayName="Sr Sequence" sap:VirtualizedContainerService.HintSize="496,1254.4" sap2010:WorkflowViewState.IdRef="Sequence_3">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <Assign sap:VirtualizedContainerService.HintSize="433.6,81.6" sap2010:WorkflowViewState.IdRef="Assign_4">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">[firstname]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">[in_TransactionItem.SpecificContent("firstname").ToString]</InArgument>
+          </Assign.Value>
+        </Assign>
+        <Assign sap:VirtualizedContainerService.HintSize="433.6,81.6" sap2010:WorkflowViewState.IdRef="Assign_5">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">[lastname]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">[in_TransactionItem.SpecificContent("lastname").ToString]</InArgument>
+          </Assign.Value>
+        </Assign>
+        <Assign sap:VirtualizedContainerService.HintSize="433.6,81.6" sap2010:WorkflowViewState.IdRef="Assign_6">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">[suffix]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">[in_TransactionItem.SpecificContent("suffix").ToString]</InArgument>
+          </Assign.Value>
+        </Assign>
+        <ui:ExecuteNonQuery ContinueOnError="{x:Null}" TimeoutMS="{x:Null}" AffectedRecords="[dt_command]" CommandType="Text" DisplayName="Run command" ExistingDbConnection="[in_DBCon]" sap:VirtualizedContainerService.HintSize="433.6,89.6" sap2010:WorkflowViewState.IdRef="ExecuteNonQuery_2" Sql="[&quot;INSERT INTO [dbo].[Vajrang] (firstname, lastname, suffix) VALUES ('&quot; &amp; firstname &amp; &quot;', '&quot; &amp; lastname &amp; &quot;', '&quot; &amp; suffix &amp; &quot;');&quot;]">
+          <ui:ExecuteNonQuery.Parameters>
+            <scg:Dictionary x:TypeArguments="x:String, Argument" />
+          </ui:ExecuteNonQuery.Parameters>
+        </ui:ExecuteNonQuery>
+        <ui:AddDataRow DataRow="{x:Null}" ArrayRow="[{firstname, lastname, suffix}]" DataTable="[Dt_DataRow_Sr]" DisplayName="Add Data Row" sap:VirtualizedContainerService.HintSize="433.6,188" sap2010:WorkflowViewState.IdRef="AddDataRow_2" />
+        <Assign sap:VirtualizedContainerService.HintSize="433.6,81.6" sap2010:WorkflowViewState.IdRef="Assign_11">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:Int32">[increment]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:Int32">[increment + 2]</InArgument>
+          </Assign.Value>
+        </Assign>
+        <ui:WriteRange StartingCell="{x:Null}" AddHeaders="True" DataTable="[Dt_DataRow_Sr]" DisplayName="Write Range Workbook" sap:VirtualizedContainerService.HintSize="433.6,116" sap2010:WorkflowViewState.IdRef="WriteRange_2" SheetName="Sheet3" WorkbookPath="[in_Config(&quot;DataFile&quot;).ToString]" />
+        <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="433.6,142.4" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="[UiPath.Core.Activities.LogLevel.Info]" Message="[&quot;Details of Sr&quot;+in_TransactionItem.SpecificContent(&quot;firstname&quot;).ToString +&quot; -----------------------------   &quot;  + in_TransactionItem.SpecificContent(&quot;lastname&quot;).ToString +&quot; -----------------------------   &quot;  + in_TransactionItem.SpecificContent(&quot;suffix&quot;).ToString]" />
+      </Sequence>
+    </Switch>
+    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="532.8,142.4" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="[UiPath.Core.Activities.LogLevel.Info]" Message="[&quot;Count of new Jr rows added to datatable--------------------&gt;&quot; + (Dt_DataRow_Jr.RowCount).ToString]" />
+    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="532.8,142.4" sap2010:WorkflowViewState.IdRef="LogMessage_6" Level="[UiPath.Core.Activities.LogLevel.Info]" Message="[&quot;Count of new Sr rows added to datatable--------------------&gt;&quot; + (Dt_DataRow_Sr.RowCount).ToString]" />
   </Sequence>
 </Activity>
