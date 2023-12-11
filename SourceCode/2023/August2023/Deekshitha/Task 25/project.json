@@ -1,19 +1,19 @@
 {
-  "name": "2_interviewpractical",
-  "projectId": "61b214d6-9480-49fa-af44-889189b2be78",
+  "name": "Task 25",
+  "projectId": "39358bf4-ccb4-4133-af1c-0d1593b4f366",
   "description": "Blank Process",
   "main": "Main.xaml",
   "dependencies": {
-    "UiPath.Excel.Activities": "[2.16.0]",
-    "UiPath.Mail.Activities": "[1.18.1]",
-    "UiPath.System.Activities": "[22.10.3]",
-    "UiPath.Testing.Activities": "[22.10.0]",
-    "UiPath.UIAutomation.Activities": "[22.10.3]"
+    "UiPath.Excel.Activities": "[2.22.2]",
+    "UiPath.Mail.Activities": "[1.21.1]",
+    "UiPath.System.Activities": "[23.10.2]",
+    "UiPath.Testing.Activities": "[23.10.0]",
+    "UiPath.UIAutomation.Activities": "[23.10.3]"
   },
   "webServices": [],
   "entitiesStores": [],
   "schemaVersion": "4.0",
-  "studioVersion": "22.10.3.0",
+  "studioVersion": "23.10.0.0",
   "projectVersion": "1.0.0",
   "runtimeOptions": {
     "autoDispose": false,
@@ -51,7 +51,7 @@
   "entryPoints": [
     {
       "filePath": "Main.xaml",
-      "uniqueId": "74b72326-031c-4f60-b6d2-b6cb21b66336",
+      "uniqueId": "2352f571-44af-4bab-bdf9-9d42a3bec900",
       "input": [],
       "output": []
     }

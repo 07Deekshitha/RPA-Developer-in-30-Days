@@ -281,7 +281,9 @@
             <umam:SendMail AttachmentsCollection="{x:Null}" Bcc="{x:Null}" Cc="{x:Null}" ReplyTo="{x:Null}" Account="ironman_robot@vajrang.org" Body="Data from excel" DisplayName="Send Mail" From="ironman_robot@vajrang.org" sap:VirtualizedContainerService.HintSize="433.6,354.4" sap2010:WorkflowViewState.IdRef="SendMail_1" Importance="Normal" IsBodyHTML="False" IsDraft="False" Subject="Excel" To="[{&quot;deekshitha017@gmail.com&quot;}]">
               <umam:SendMail.Attachments>
                 <scg:List x:TypeArguments="InArgument(x:String)" Capacity="4">
-                  <InArgument x:TypeArguments="x:String">Data\Input\data.xlsx</InArgument>
+                  <InArgument x:TypeArguments="x:String">
+                    <VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Config(&quot;DataFile&quot;).ToString" />
+                  </InArgument>
                 </scg:List>
               </umam:SendMail.Attachments>
             </umam:SendMail>
