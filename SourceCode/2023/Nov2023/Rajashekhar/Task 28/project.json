@@ -4,8 +4,6 @@
   "description": "Complete all the PDF activities task in one or two Sequence",
   "main": "Main.xaml",
   "dependencies": {
-    "UiPath.Excel.Activities": "[2.22.2]",
-    "UiPath.Mail.Activities": "[1.21.1]",
     "UiPath.PDF.Activities": "[3.16.0]",
     "UiPath.System.Activities": "[23.10.2]",
     "UiPath.Testing.Activities": "[23.10.0]",
